@@ -1,0 +1,7 @@
+-- Creating sql table template for uploading csv dataset 
+CREATE TABLE names (
+    year INTEGER,
+    first_name TEXT,
+    sex TEXT,
+    num INTEGER
+);

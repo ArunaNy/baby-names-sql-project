@@ -1,0 +1,13 @@
+-- Finding Mary name's yearly popularity (% of births)
+WITH mary AS(
+	SELECT year, SUM(num) AS mary
+	FROM names 
+	WHERE first_name = 'Mary'
+	GROUP BY year),
+    total AS(
+	SELECT year, SUM(num) as total
+	FROM names 
+	GROUP BY year)
+	
+SELECT mary.year, ROUND(mary.mary::decimal / total.total * 100, 3) AS mary_percentage
+FROM mary JOIN total ON  mary.year = total.year

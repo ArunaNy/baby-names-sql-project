@@ -1,0 +1,22 @@
+-- Finding names that were in top 20 for over 100 years and taking their yearly rankings
+WITH sum AS (
+	SELECT first_name, year, SUM(num) AS sum
+	FROM names
+	GROUP BY first_name, year), 
+	
+ranking AS (
+	SELECT first_name, year, sum, DENSE_RANK() OVER (PARTITION BY year ORDER BY sum DESC) AS rank
+	FROM sum),
+
+filtering AS ( 
+	SELECT first_name
+	FROM ranking 
+	WHERE rank <= 20
+	GROUP BY first_name
+	HAVING COUNT(*) > 100)
+	
+SELECT first_name, year, sum, rank 
+FROM ranking
+WHERE first_name IN (SELECT first_name
+					 FROM filtering)
+	

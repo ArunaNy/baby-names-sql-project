@@ -1,0 +1,8 @@
+SELECT COUNT(*) AS total_rows, 
+	   COUNT(DISTINCT year) AS num_of_years, 
+	   COUNT(DISTINCT first_name) AS unique_names, 
+	   COUNT(DISTINCT sex) AS genders, 
+	   MIN(num) AS min_records, 
+	   MAX(num) AS max_records, 
+	   AVG(num)::int AS mean_records
+FROM names 

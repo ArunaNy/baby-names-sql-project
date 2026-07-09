@@ -1,0 +1,9 @@
+-- Finding a decade that introduced the most new names
+WITH CTE AS ( 
+	SELECT first_name, MIN(year) as first_appearance
+	FROM names
+	GROUP BY first_name)
+SELECT first_appearance / 10 * 10 AS decade, COUNT(*) AS number_of_first_apperances
+FROM CTE
+GROUP BY first_appearance / 10 * 10 
+ORDER BY COUNT(*) DESC

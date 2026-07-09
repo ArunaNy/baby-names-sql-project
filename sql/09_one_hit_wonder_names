@@ -1,0 +1,17 @@
+-- Find one-hit wonder names: names that reached the top-10 ranking in exactly one year and never again and take their yearly rankings
+WITH CTE AS ( 
+	SELECT first_name, year, DENSE_RANK() OVER (PARTITION BY year ORDER BY SUM(num) DESC) AS rank
+	FROM names
+	GROUP BY first_name, year),
+	
+ filtering AS (
+	SELECT first_name AS one_hit_wonder_names
+	FROM CTE 
+	WHERE rank <= 10
+	GROUP BY first_name
+	HAVING COUNT(*) = 1)
+	
+SELECT first_name, year, rank
+FROM CTE 
+WHERE first_name IN (SELECT one_hit_wonder_names
+					 FROM filtering)

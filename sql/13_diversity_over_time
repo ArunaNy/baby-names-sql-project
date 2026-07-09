@@ -1,0 +1,5 @@
+- Finding how diversity changed from previous year
+SELECT year, COUNT(names) AS total_names, 
+	   COUNT(names) - LAG(COUNT(names)) OVER(ORDER BY year) as change_from_previous_year
+FROM names
+GROUP BY year

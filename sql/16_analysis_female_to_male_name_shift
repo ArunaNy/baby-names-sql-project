@@ -1,0 +1,28 @@
+-- Finding names that are now mostly male but used to be female
+WITH period_counts AS (
+    SELECT
+        first_name,
+        sex,
+        CASE
+            WHEN year <= 1970 THEN 'early'
+            ELSE 'recent'
+        END AS period,
+        SUM(num) AS total
+    FROM names
+    GROUP BY first_name, sex, period
+),
+pivoted AS (
+    SELECT
+        first_name,
+        SUM(CASE WHEN period = 'early' AND sex = 'M' THEN total ELSE 0 END) AS early_male,
+        SUM(CASE WHEN period = 'early' AND sex = 'F' THEN total ELSE 0 END) AS early_female,
+        SUM(CASE WHEN period = 'recent' AND sex = 'M' THEN total ELSE 0 END) AS recent_male,
+        SUM(CASE WHEN period = 'recent' AND sex = 'F' THEN total ELSE 0 END) AS recent_female
+    FROM period_counts
+    GROUP BY first_name
+)
+SELECT first_name, early_male, early_female, recent_female, recent_male
+FROM pivoted
+WHERE early_male < early_female
+  AND recent_female < recent_male
+ORDER BY (early_female - early_male) + (recent_male - recent_female) DESC

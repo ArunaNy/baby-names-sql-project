@@ -1,0 +1,22 @@
+-- Finding names whose popularity decreased the fastest on average across all years and taking their yearly popularity trend (for plotting).
+WITH sum_per_name AS ( 
+	SELECT first_name, year, SUM(num) as num
+	FROM names 
+	GROUP BY first_name, year), 
+
+	fraction AS (
+	SELECT first_name, year, num / SUM(num) OVER (PARTITION BY year) * 100 as proportion
+	FROM sum_per_name),
+	
+filtering AS (
+	SELECT first_name, REGR_SLOPE(proportion, year) AS yearly_growth
+	FROM fraction 
+	GROUP BY first_name
+	HAVING COUNT(*) > 10
+	ORDER BY yearly_growth 
+	LIMIT 10) 
+	
+SELECT first_name, year, proportion
+FROM fraction 
+WHERE first_name IN (SELECT first_name
+					 FROM filtering)

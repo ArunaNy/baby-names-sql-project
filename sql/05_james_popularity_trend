@@ -1,0 +1,13 @@
+-- Finding James name's yearly popularity (% of births)
+WITH james AS(
+	SELECT year, SUM(num) AS James
+	FROM names 
+	WHERE first_name = 'James'
+	GROUP BY year),
+    total AS(
+	SELECT year, SUM(num) as total
+	FROM names 
+	GROUP BY year)
+	
+SELECT james.year, ROUND(james.james::decimal / total.total * 100, 3) AS james_percentage
+FROM james JOIN total ON  james.year = total.year

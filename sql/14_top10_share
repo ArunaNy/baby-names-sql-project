@@ -1,0 +1,21 @@
+-- Finding how much of all births were accounted for by the top 10 names in each decade.
+WITH ranking AS ( 
+	SELECT year, first_name, num,
+		DENSE_RANK() OVER (PARTITION BY year ORDER BY num DESC) AS rank, 
+		SUM(num) OVER (PARTITION BY year) as total_sum
+	FROM names), 
+	
+	interim AS ( 
+		SELECT year, SUM(num) OVER (PARTITION BY year) as top_ten_sum, total_sum
+		FROM ranking
+		WHERE rank <= 10)
+
+	SELECT DISTINCT year / 10 * 10 AS decade, SUM(top_ten_sum) AS top_ten_sum, SUM(total_sum) AS total_sum, 
+		   ROUND(SUM(top_ten_sum)::decimal / SUM(total_sum) * 100, 2) AS top10_percentage
+	FROM interim
+	GROUP BY year / 10 * 10
+	
+
+
+
+

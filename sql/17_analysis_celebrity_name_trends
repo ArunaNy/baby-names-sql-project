@@ -1,0 +1,26 @@
+-- Investigate the influence of celebrities and historical events on baby naming trends.
+SELECT year, 
+    SUM(CASE WHEN first_name = 'Theodore' then num ELSE 0 END) AS Theodore, -- Theodore Roosevelt 1901 - 1909
+    SUM(CASE WHEN first_name = 'Abraham' then num ELSE 0 END) AS Abraham, -- Abraham Lincoln 1861 - 1865
+    SUM(CASE WHEN first_name = 'Bill' then num ELSE 0 END) AS Bill, --  Bill Clinton 1993 - 2001
+    SUM(CASE WHEN first_name = 'Franklin' then num ELSE 0 END) AS Franklin, -- Franklin D. Roosevelt 1933 – 1945
+    SUM(CASE WHEN first_name = 'John' then num ELSE 0 END) AS  John, -- John F. Kennedy 1961 – 1963
+    SUM(CASE WHEN first_name = 'George' then num ELSE 0 END) AS George, -- George H. W. Bush 1989 - 1993
+    SUM(CASE WHEN first_name = 'Barack' then num ELSE 0 END) AS Barack, -- Barack Obama 2009 – 2017
+    SUM(CASE WHEN first_name = 'Donald' then num ELSE 0 END) AS Donald, -- Donald Trump 2017 – 2021, 2025 - now
+	SUM(CASE WHEN first_name = 'Adolf' then num ELSE 0 END) AS Adolf,
+    SUM(CASE WHEN first_name = 'Elon' then num ELSE 0 END) AS Elon,
+    SUM(CASE WHEN first_name = 'Beyonce' then num ELSE 0 END ) AS Beyonce,
+    SUM(CASE WHEN first_name = 'Keanu' then num ELSE 0 END) AS Keanu,
+    SUM(CASE WHEN first_name = 'Sydney' then num ELSE 0 END) AS Sydney,
+    SUM(CASE WHEN first_name = 'Taylor' then num ELSE 0 END) AS Taylor,
+    SUM(CASE WHEN first_name = 'Jennifer' then num ELSE 0 END) AS Jennifer,
+    SUM(CASE WHEN first_name = 'Kendall' then num ELSE 0 END) AS Kendall,
+    SUM(CASE WHEN first_name = 'Kylie' then num ELSE 0 END) AS Kylie,
+    SUM(CASE WHEN first_name = 'Kim' then num ELSE 0 END) AS Kim, 
+    SUM(CASE WHEN first_name = 'Margot' then num ELSE 0 END) AS Margot, 
+    SUM(CASE WHEN first_name = 'Sabrina' then num ELSE 0 END) AS Sabrina, 
+    SUM(CASE WHEN first_name = 'Ariana' then num ELSE 0 END) AS Ariana, 
+    SUM(CASE WHEN first_name = 'Rihanna' then num ELSE 0 END) AS Rihanna
+FROM names 
+GROUP BY year

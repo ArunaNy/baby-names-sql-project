@@ -1,0 +1,8 @@
+-- Select names there were common in the past (more than 100 records yearly), but completely disappeared in the last 50 years 
+SELECT DISTINCT first_name AS old_names
+FROM names 
+WHERE year BETWEEN 1880 AND 1975 
+	  AND num >= 100
+	  AND first_name NOT IN (SELECT DISTINCT first_name 
+							 FROM names 
+							 WHERE year BETWEEN 1976 AND 2025)

@@ -1,0 +1,11 @@
+-- Finding the top 20 most popular female names (with the highest total occurrences)
+WITH CTE AS(
+	SELECT first_name, SUM(num) AS total_occurances
+	FROM names 
+	WHERE sex = 'F'
+	GROUP BY first_name 
+	ORDER BY SUM(num) DESC
+	LIMIT 20	
+)
+SELECT first_name, DENSE_RANK() OVER (ORDER BY total_occurances DESC) AS rank, total_occurances
+FROM CTE
